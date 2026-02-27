@@ -1,10 +1,10 @@
-package com.solarlyz.appsubastas.features.subastas.data.models
+package com.solarlyz.appsubastas.features.auction_management.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class AuctionDto(
+data class AuctionDetailDto(
     @SerializedName("id")
-    val id: Int,
+    val id: String,
     @SerializedName("title")
     val title: String,
     @SerializedName("description")
@@ -15,8 +15,14 @@ data class AuctionDto(
     val initialPrice: Double,
     @SerializedName("current_price")
     val currentPrice: Double,
+    @SerializedName("start_date")
+    val startDate: String,
     @SerializedName("end_date")
     val endDate: String,
+    @SerializedName("status")
+    val status: String,
     @SerializedName("category_id")
-    val categoryId: Int
+    val categoryId: Int,
+    @SerializedName("user_id")
+    val sellerId: String
 )

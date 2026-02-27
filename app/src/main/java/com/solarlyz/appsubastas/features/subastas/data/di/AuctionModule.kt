@@ -9,23 +9,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AuctionModule {
-
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("http://18.211.229.66:8080/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
 
     @Provides
     @Singleton
@@ -35,10 +23,11 @@ object AuctionModule {
 
     @Provides
     @Singleton
-    fun provideAuctionRepository(api: AuctionApi): AuctionRepository {
+    fun provideAuctionRepository(
+        api: AuctionApi
+    ): AuctionRepository {
         return AuctionRepositoryImpl(api)
     }
-
 
     @Provides
     @Singleton
