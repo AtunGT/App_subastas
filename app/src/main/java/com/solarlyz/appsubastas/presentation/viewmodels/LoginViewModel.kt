@@ -3,7 +3,6 @@ package com.solarlyz.appsubastas.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solarlyz.appsubastas.domain.usecases.LoginUseCase
-import com.solarlyz.appsubastas.core.utils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,17 +29,14 @@ class LoginViewModel @Inject constructor(
 
     fun onLogin(email: String, pass: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             loginUseCase(email, pass).collect { result ->
-                when (result) {
-                    is Result.Loading -> { _isLoading.value = true }
-                    is Result.Success -> {
-                        _isLoading.value = false
-                        _eventFlow.emit(UiEvent.LoginSuccess)
-                    }
-                    is Result.Error -> {
-                        _isLoading.value = false
-                        _eventFlow.emit(UiEvent.ShowSnackbar(result.message ?: "Error al entrar"))
-                    }
+                _isLoading.value = false
+                result.onSuccess {
+                    _eventFlow.emit(UiEvent.LoginSuccess)
+                }
+                result.onFailure { exception ->
+                    _eventFlow.emit(UiEvent.ShowSnackbar(exception.message ?: "Error desconocido"))
                 }
             }
         }

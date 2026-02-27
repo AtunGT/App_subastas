@@ -1,5 +1,6 @@
 package com.solarlyz.appsubastas.core.di
 
+import com.solarlyz.appsubastas.core.network.AuthApi // <--- Verifica este import
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +17,14 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.ejemplo.com/")
+            .baseUrl("http://192.168.0.234:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthApi(retrofit: Retrofit): AuthApi {
+        return retrofit.create(AuthApi::class.java)
     }
 }

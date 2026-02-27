@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.solarlyz.appsubastas.presentation.viewmodels.LoginViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
@@ -22,25 +21,28 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     val isLoading by viewModel.isLoading.collectAsState()
     val context = LocalContext.current
-
-
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = viewModel.eventFlow) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is LoginViewModel.UiEvent.LoginSuccess -> onLoginSuccess()
+                is LoginViewModel.UiEvent.LoginSuccess -> {
+                    onLoginSuccess()
+                }
                 is LoginViewModel.UiEvent.ShowSnackbar -> {
-                    android.widget.Toast.makeText(context, event.message, android.widget.Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(text = "Iniciar Sesión", style = MaterialTheme.typography.headlineLarge)
+
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
@@ -48,29 +50,47 @@ fun LoginScreen(
             onValueChange = { email = it },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
-            enabled = !isLoading
+            enabled = !isLoading,
+            singleLine = true
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
-            enabled = !isLoading
+            enabled = !isLoading,
+            singleLine = true
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.padding(top = 16.dp))
+            CircularProgressIndicator()
         } else {
             Button(
-                onClick = { viewModel.onLogin(email, password) },
-                modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
+                onClick = {
+                    if (email.isNotBlank() && password.isNotBlank()) {
+                        viewModel.onLogin(email, password)
+                    } else {
+                        Toast.makeText(context, "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Entrar")
             }
         }
 
-        TextButton(onClick = onNavigateToRegister, enabled = !isLoading) {
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(
+            onClick = onNavigateToRegister,
+            enabled = !isLoading
+        ) {
             Text("¿No tienes cuenta? Regístrate")
         }
     }

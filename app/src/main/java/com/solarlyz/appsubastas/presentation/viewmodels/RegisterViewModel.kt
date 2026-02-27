@@ -20,27 +20,20 @@ class RegisterViewModel @Inject constructor(
     private val _message = MutableStateFlow<String?>(null)
     val message = _message.asStateFlow()
 
-    fun onRegister(email: String, pass: String) {
-        if (email.isEmpty() || pass.isEmpty()) {
-            _message.value = "Por favor, completa todos los campos"
-            return
-        }
-
+    fun onRegister(name: String, lastname: String, email: String, pass: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                registerUseCase(email, pass).collect {
+                registerUseCase(name, lastname, email, pass).collect {
                     _message.value = "Usuario creado correctamente"
                 }
             } catch (e: Exception) {
-                _message.value = "Error: ${e.message ?: "No se pudo crear la cuenta"}"
+                _message.value = e.message ?: "Error en el servidor"
             } finally {
                 _isLoading.value = false
             }
         }
     }
 
-    fun clearMessage() {
-        _message.value = null
-    }
+    fun clearMessage() { _message.value = null }
 }
