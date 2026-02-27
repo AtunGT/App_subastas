@@ -1,13 +1,10 @@
 package com.solarlyz.appsubastas.features.subastas.presentation.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -16,18 +13,15 @@ import com.solarlyz.appsubastas.features.subastas.domain.entities.Auction
 
 @Composable
 fun AuctionCard(auction: Auction) {
-
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
-
         Column {
-
             AsyncImage(
                 model = auction.imageUrl,
-                contentDescription = null,
+                contentDescription = "Imagen de ${auction.title}",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -35,7 +29,6 @@ fun AuctionCard(auction: Auction) {
             )
 
             Column(modifier = Modifier.padding(16.dp)) {
-
                 Text(
                     text = auction.title,
                     style = MaterialTheme.typography.titleMedium

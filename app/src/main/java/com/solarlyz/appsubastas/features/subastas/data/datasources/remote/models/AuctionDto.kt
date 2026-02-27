@@ -1,12 +1,26 @@
 package com.solarlyz.appsubastas.features.subastas.datasources.remote.models
 
+import com.google.gson.annotations.SerializedName
+
 data class AuctionDto(
-    val id: String,
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("title")
     val title: String,
+    @SerializedName("description")
     val description: String,
-    val imageUrl: String,
+    @SerializedName("initial_price")
+    val initialPrice: Double,
+    @SerializedName("current_price")
     val currentPrice: Double,
-    val bids: Int,
-    val timeRemaining: String,
-    val category: String
+    @SerializedName("start_date")
+    val startDate: String,
+    @SerializedName("end_date")
+    val endDate: String,
+    @SerializedName("status")
+    val status: String,
+    @SerializedName("user_id")
+    val userId: Int,
+    @SerializedName("category_id")
+    val categoryId: Int
 )

@@ -5,13 +5,18 @@ import com.solarlyz.appsubastas.features.subastas.domain.entities.Auction
 
 fun AuctionDto.toDomain(): Auction {
     return Auction(
-        id = id,
-        title = title,
-        description = description,
-        imageUrl = imageUrl,
-        currentPrice = currentPrice,
-        bids = bids,
-        timeRemaining = timeRemaining,
-        category = category
+        id = this.id.toString(),
+        title = this.title,
+        description = this.description,
+        imageUrl = "https://picsum.photos/seed/${this.id}/400/400",
+        currentPrice = this.currentPrice,
+        bids = 0,
+        timeRemaining = "Termina: ${this.endDate.substringBefore("T")}",
+        category = when (this.categoryId) {
+            1 -> "Electrónica"
+            2 -> "Arte"
+            3 -> "Moda"
+            else -> "Otros"
+        }
     )
 }
