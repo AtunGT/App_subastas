@@ -1,4 +1,4 @@
-package com.solarlyz.appsubastas.ui.theme
+package com.solarlyz.appsubastas.core.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

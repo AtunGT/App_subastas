@@ -1,4 +1,4 @@
-package com.solarlyz.appsubastas.ui.theme
+package com.solarlyz.appsubastas.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
