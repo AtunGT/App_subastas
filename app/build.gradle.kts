@@ -4,26 +4,23 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.solarlyz.appsubastas"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.solarlyz.appsubastas"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
     }
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.6.11"
     }
 
     compileOptions {
@@ -37,7 +34,6 @@ android {
 }
 
 dependencies {
-
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
@@ -59,7 +55,8 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.coil.compose)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.kotlinx.coroutines.android)
