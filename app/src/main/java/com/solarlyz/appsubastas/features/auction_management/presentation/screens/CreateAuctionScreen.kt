@@ -6,10 +6,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
@@ -56,13 +55,11 @@ fun CreateAuctionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text("Nueva Subasta")
-                },
+                title = { Text("Nueva Subasta") },
                 navigationIcon = {
                     IconButton(onClick = { onNavigateBack() }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Regresar"
                         )
                     }
@@ -121,9 +118,15 @@ fun CreateAuctionScreen(
 
             Button(
                 onClick = {
-                    val price = initialPrice.toDoubleOrNull() ?: 0.0
-                    val catId = categoryId.toIntOrNull() ?: 1
-                    viewModel.createAuction(title, description, price, catId, endDate)
+                    val price = initialPrice.toDoubleOrNull()
+                    val catId = categoryId.toIntOrNull()
+                    val isDateValid = Regex("""\d{4}-\d{2}-\d{2}""").matches(endDate)
+
+                    if (title.isBlank() || description.isBlank() || price == null || price <= 0.0 || catId == null || !isDateValid) {
+                        Toast.makeText(context, "Por favor completa todos los campos correctamente", Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.createAuction(title, description, price, catId, endDate)
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
